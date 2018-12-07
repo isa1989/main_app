@@ -1,0 +1,161 @@
+{% include 'header.html' %}
+{% load static %}
+
+<style>
+
+.statistics_back h1 {
+  font-size: 70px;
+  color: #fff;
+  position: absolute;
+  bottom: 0;
+  text-shadow: 1px 1px 3px #333;
+}
+
+@media screen and (max-width: 700px) {
+  .statistics_back h1 {
+    font-size: 50px;
+  }
+}
+
+.statistics_main {
+  margin-bottom: 20px 5px 200px 5px;
+}
+
+.statistics_main p {
+padding: 20px 0;
+}
+
+
+
+
+.statistics_main li {
+  padding: 5px 0;
+  margin: 3px 10px;
+  width: 90%;
+  transition: ease 300ms;
+}
+/*
+.statistics_main li:before {
+  content: "-";
+  padding: 0;
+  color: #148CA1;
+}
+*/
+.statistics_main li:hover {
+  color: #25BDD8;
+  padding-left: 8px;
+}
+
+.statistics_main a {
+  padding: 10px;
+  font-size: 15px;
+  color: #148CA1;
+  margin: 5px 0;
+}
+
+.statistics_main a:hover {
+  color: #25BDD8;
+}
+
+button.stat_chapters {
+  width: 100%;
+  padding: 15px 25px;
+  border: none;
+  text-align: left;
+  border-radius: 7px;
+  margin: 7px 0;
+  cursor: pointer;
+  color: #fff;
+  background-color: #32B5CC;
+  transition: background 300ms ease;
+  box-shadow: 0px 5px 12px 0px rgba(50, 181, 204, 0.6);
+}
+
+.statistics_main button:hover {
+  box-shadow: 0px 5px 12px 0px rgba(20, 140, 161, 0.35);
+  color: #595959;
+  background-color: #fff;
+}
+
+.statistics_main button:focus {
+  outline: none;
+  box-shadow: none;
+  box-shadow: 0px 5px 12px 0px rgba(20, 140, 161, 0.35);
+}
+
+/*STATISTICS CHAPTERS STYLE STARTS*/
+.statistics-chs h2 {
+ padding: 20px 0;
+}
+
+.statistics-chs p {
+ font-size: 14px;
+ color: #595959;
+ text-indent: 50px;
+}
+
+.all-ch {
+  position: -webkit-sticky;
+  position: sticky;
+  top:60px;
+  right: 0;
+  text-align: center;
+  width: 100%;
+  padding-top: 3.5px;
+  border-top: 4px solid rgba(221, 83, 71,1);
+}
+
+.all-ch a {
+  font-size: 14px;
+  color: #fff;
+  background: rgba(221, 83, 71,0.9);
+  border-radius:0 0 25px 25px;
+  padding: 10px 29px;
+  margin-top: 70px;
+  z-index: 1;
+}
+
+.tab2-img {
+  padding: 0;
+  text-align: center;
+}
+
+.tab2-img img {
+  height: 17vw;
+  width: 80%;
+  margin:0 0 10px 0;
+  object-fit: cover;
+
+}
+
+/* -------------------------------STATISTICS STYLE ends------------------------------------------ */
+</style>
+
+
+  <div class="container-fluid">
+  	<div class="statistics_main">
+				<p>Aşağıdakı dərsləri öyrənməklə siz Statistikanın ümumi nəzəriyyəsini ən yaxşı səviyyədə mənimsəyə bilərsiniz.</p>
+
+		<div class="row">
+
+			<div class="col-md-3">
+                {% for topic in topic_category %}
+				<button href="#ch1" class=" stat_chapters" data-toggle="collapse">{{topic.title_english}}</button>
+			        <div id="ch1" class="collapse">
+						<ul class="list-unstyled">
+                       {% for topics in topic.contents %}
+                           <li><a href="ch1-1.php">{{ topics.title }}</a></li>
+                            {% endfor%}
+						</ul>
+			        </div>
+
+{% endfor %}
+
+
+
+
+
+
+
+
+

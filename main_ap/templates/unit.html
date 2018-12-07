@@ -1,0 +1,135 @@
+{% include 'header.html' %}
+{% load static %}
+<div class="container-fluid  all-services">
+   <div class="container">
+      <h1>DƏRSLƏR</h1>
+      <hr>
+      <div class="services-tab">
+         <div class="row">
+            <div class="col-md-3 services_tab_heads">
+                <h4>Mövzular</h4>
+               <ul class="services_tab_head">
+
+                  {% for service_list in services_list %}
+                  <div class="container-fluid">
+
+                <li rel="{{service_list.id}}">{{service_list.title_s}}</li>
+                  </div>
+                  {% endfor %}
+
+               </ul>
+            </div>
+
+            <div class="col-md-9 tb-content">
+                 {% for service_list in services_list %}
+               <div class="services_container">
+
+
+
+
+                  <div id="{{service_list.id}}" class="services_content">
+                      <h3>{{service_list.title_s|safe }}</h3>
+
+
+                     <h3>{{service_list.content_s|safe }}</h3>
+
+
+
+               </div>
+
+                   </div>
+                {% endfor %}
+               </div>
+            </div>
+
+         </div>
+
+   </div>
+</div>
+<script>
+   $(".services_content").hide();
+   $(".services_content:first").show();
+
+   $(".services_tab_head li").click(function() {
+
+     $(".services_content").hide();
+     var activeTab = $(this).attr("rel");
+     $("#"+activeTab).fadeIn();
+     $(".services_tab_head li").removeClass("active");
+     $(this).addClass("active");
+   });
+</script>
+
+ <style>
+	 .c-go-top {
+	  background: none repeat scroll 0 0 padding-box #323232;
+	  bottom: 40px;
+	  border-radius: 25px;
+	  color: #fff;
+	  display: none;
+	  font-size: 17px;
+	  opacity: 0.8;
+	  padding: 9px 10px;
+	  position: fixed;
+	  right: 40px;
+	  text-decoration: none;
+	  z-index: 999;
+	  transition-duration: 0.25s;
+	}
+
+	.c-go-top:hover,
+	.c-go-top:focus,
+	.c-go-top:active,
+	.c-go-top:visited {
+	  color: #fff;
+	  opacity: 1;
+	  outline: 0;
+	  text-decoration: none;
+	  background: #295B9D;
+	}
+ </style>
+
+
+
+
+
+
+ <a href="#" id="c-go-top" class="c-go-top"><i class="fa fa-chevron-up fa-fw"></i></a>
+
+<script>
+$(function() {
+  // Amount of scrolling before button is shown/hidden.
+  var offset = 100;
+
+  // Fade duration
+  var duration = 500;
+
+  // Toggle view of button when scrolling.
+  $(window).scroll(function() {
+    if ($(this).scrollTop() > offset) {
+      $('#c-go-top').fadeIn(duration);
+    } else {
+      $('#c-go-top').fadeOut(duration);
+    }
+  });
+
+  // Scroll to top when button is clicked.
+  $('#c-go-top').click(function(event) {
+    event.preventDefault();
+    $('html, body').animate({
+      scrollTop: 0
+    }, duration);
+    return false;
+  });
+});
+</script>
+
+{% include 'footer.html' %}
+
+
+
+
+
+
+
+

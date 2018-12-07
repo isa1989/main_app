@@ -1,0 +1,228 @@
+{% include 'header.html' %}
+
+{% load static %}
+
+{% block content %}
+<div class="row">
+<div class="col-md-3 services_tab_heads">
+<style>
+body{
+background-color: #F5F5F5;
+}
+div.ex1 {
+
+    min-width: 100%;
+    max-height: 580px;
+    overflow-x: scroll;
+    padding: 15px;
+    background: #2077AF;
+}
+
+.ex1 .card-body {
+padding:5px;
+}
+</style>
+
+
+<div class="ex1">
+<div class="row mb-2">
+{% for topic in topic_category %}
+  <div class="col-md-12">
+    <div class="card flex-md-row mb-3 box-shadow h-md-20">
+      <div class="card-body d-flex flex-column align-items-start">
+        <strong class="d-inline-block mb-2 color-gray">{{topic.title_english}}</strong>
+        <h5 class="mb-0">
+          <a id="id_{{topic.title_english|cut:' '}}" class="color{{ forloop.counter }}" href="#contents">{{topic.title_other}}</a>
+        </h5>
+        <div class="mb-2"></div>
+        <p class="card-text mb-auto card-overflow">
+        {{topic.short_description}}
+        </p>
+      </div>
+
+    </div>
+  </div>
+{% endfor %}
+</div>
+</div>
+</div>
+
+
+<div class="col-md-9 tb-content">
+
+<div id="contents" href="#"></div>
+<ul class="nav " id="myTab" role="tablist">
+  {% for topic in topic_category %}
+  <li class="nav-item">
+      <a class="nav-link {% if forloop.counter == 1 %}active show{% endif %}" id="tab-{{ topic.title_english|cut:' ' }}" data-toggle="tab" href="#con-{{ topic.title_english|cut:' ' }}" role="tab" aria-controls="home"
+        aria-selected="true"></a>
+  </li>
+  {% endfor %}
+</ul>
+
+<div class="tab-content" id="myTabContent">
+{% for topic in topic_category %}
+  <div class="tab-pane fade {% if forloop.counter == 1 %}show active{% endif %}" id="con-{{ topic.title_english|cut:' ' }}" role="tabpanel" aria-labelledby="tab-{{ topic.title_english|cut:' ' }}">
+      {% if topic.topic_type == 'YT' %}
+      <!-- List & Videos Area -->
+      <div class="video-border p-3 p-md-5 rounded-right rounded-bottom testtt">
+        <div role="tabpanel">
+          <div class="row">
+
+            <div class="col-md-4 col-sm-12 test4">
+                <div class="test4">
+              <div class="list-group" id="list-tab" role="tablist">
+                {% for tcontent in topic.contents %}
+                <a class="list-group-item list-group-item-action {% if forloop.counter == 1 %} active show {% endif %}" id="list-home-list" data-toggle="tab" href="{{ tcontent.video_id }}" role="tab"
+                  aria-controls="list-home" aria-selected="true">{{ tcontent.title }}{% if tcontent.tag %}<span style="display:block" class="badge text-primary">{{tcontent.tag}}</span>{% endif %}</a>
+                  <span id="sdesc" class="d-none">{{ tcontent.description }}</span>
+                {% endfor %}
+              </div>
+                    </div>
+            </div>
+            <!-- Youtube -->
+            <div id="youtube-container" class="col-8">
+              <div class="tab-content" id="nav-tabContent">
+                <div class="tab-pane fade active show" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
+                  <div class="videoWrapper">
+                    <iframe id="youtube-player-{{ topic.id }}" type="text/html" width="5360" height="315" src="https://www.youtube.com/embed/{{topic.contents.0.video_id}}" frameborder="0"
+                      allowfullscreen></iframe>
+                  </div>
+                  <div class="mb-3"></div>
+                  <div id="youtube-description" class="youtube-description">
+                      <pre style="white-space: pre-wrap;">{{topic.contents.0.description}}</pre>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {% elif topic.topic_type == 'UR' %}
+      <!-- Tutorial -->
+      <ul class="list-group rounded">
+          {% for tcontent in topic.contents %}
+          <li class="list-group-item">
+            <a href="{{ tcontent.url }}" target="_blank">{{ tcontent.title }}</a>
+          </li>
+          {% endfor %}
+      </ul>
+      <!-- End of Tutorial -->
+      {% endif %}
+  </div>
+{% endfor %}
+</div>
+
+{% endblock content %}
+
+{% block script %}
+</div>
+
+</div>
+<script src="{% static 'js/ba-linkify.min.js' %}"></script>
+<script>
+  {% for topic in topic_category %}
+  $("#id_{{topic.title_english|cut:' '}}").on('click', function (e) {
+    var tabId = "#tab-{{topic.title_english|cut:' '}}"
+    $(tabId).tab('show')
+    /*
+    $(".videoWrapper iframe").each(function(){
+        // $(this).addClass("invisible")
+        $(this).attr("class","invisible")
+    }) */
+    //$("#youtube-player-{{ topic.id }}").attr("class","visible")
+  })
+  {% endfor %}
+
+  $(function(){
+    $(".youtube-description pre").each(function(){
+      $(this).html(linkify($(this).text()))
+    })
+  })
+
+  $('#myTabContent #list-tab a').each(function (index) {
+      $(this).on('click', function (e) {
+          var href = $(this).attr('href')
+          var newUrl = "https://www.youtube.com/embed/" + href
+          $('#myTabContent .tab-pane:visible #youtube-container iframe').attr('src', newUrl)
+
+          var videoDesc = $(this).next().text()
+          videoDesc = linkify(videoDesc)
+          $('#myTabContent .tab-pane:visible #youtube-description pre').html(videoDesc)
+      })
+  })
+
+</script>
+{% endblock script %}
+ <style>
+	 .c-go-top {
+	  background: none repeat scroll 0 0 padding-box #323232;
+	  bottom: 40px;
+	  border-radius: 25px;
+	  color: #fff;
+	  display: none;
+	  font-size: 17px;
+	  opacity: 0.8;
+	  padding: 9px 10px;
+	  position: fixed;
+	  right: 40px;
+	  text-decoration: none;
+	  z-index: 999;
+	  transition-duration: 0.25s;
+	}
+
+	.c-go-top:hover,
+	.c-go-top:focus,
+	.c-go-top:active,
+	.c-go-top:visited {
+	  color: #fff;
+	  opacity: 1;
+	  outline: 0;
+	  text-decoration: none;
+	  background: #295B9D;
+	}
+ </style>
+
+
+
+
+
+
+ <a href="#" id="c-go-top" class="c-go-top"><i class="fa fa-chevron-up fa-fw"></i></a>
+
+<script>
+$(function() {
+  // Amount of scrolling before button is shown/hidden.
+  var offset = 100;
+
+  // Fade duration
+  var duration = 500;
+
+  // Toggle view of button when scrolling.
+  $(window).scroll(function() {
+    if ($(this).scrollTop() > offset) {
+      $('#c-go-top').fadeIn(duration);
+    } else {
+      $('#c-go-top').fadeOut(duration);
+    }
+  });
+
+  // Scroll to top when button is clicked.
+  $('#c-go-top').click(function(event) {
+    event.preventDefault();
+    $('html, body').animate({
+      scrollTop: 0
+    }, duration);
+    return false;
+  });
+});
+</script>
+
+
+
+
+
+
+
+{% include 'footer.html' %}
